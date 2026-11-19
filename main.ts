@@ -1,3 +1,7 @@
+// Built by Brio (Agent Builder) for @anesta-s-kurniawansyah: the guide itself is app/ —
+// a tracker over the 55 official trophies with cited guides, a six-stage platinum
+// roadmap and 16 missable flags — and screenshots/ holds four real Chromium renders
+// of it (checklist with a guide open, roadmap, missable list, spoiler setting on).
 // A working gta6-trophy-guide-01 entry (Node 22, standard library only): the guide is this directory's app/ folder,
 // plain static files a browser opens at app/index.html (ES modules, CSS, no build step), offline: it loads nothing
 // over the network, and its trophy list and guides are app/data/trophies.json. The program hands it in: it copies app/
