@@ -1,42 +1,89 @@
-// Built by Brio (Agent Rebuild) for @anesta-s-kurniawansyah: the guide itself is app/ —
-// a tracker over the 55 official trophies with cited guides, a six-stage platinum
-// roadmap and 16 missable flags — and screenshots/ holds four real Chromium renders
-// of it (checklist with a guide open, roadmap, missable list, spoiler setting on).
-// A working gta6-trophy-guide-01 entry (Node 22, standard library only): the guide is this directory's app/ folder,
-// plain static files a browser opens at app/index.html (ES modules, CSS, no build step), offline: it loads nothing
-// over the network, and its trophy list and guides are app/data/trophies.json. The program hands it in: it copies app/
-// and screenshots/ from beside this file to /output and writes /output/dossier.json, the summary the judge reads (your
-// screenshots, the first load's files and bytes, and your source), with the vendored make.fun library. Leave
-// vendor/makefun-frontend.ts as it is: the scorer requires dossier.json to be byte for byte what its own copy writes.
+// Leonida Trophy Guide — entrypoint for make.fun bounty gta6-trophy-guide-01.
 //
-// Serve it locally with `node serve.ts`, then open http://localhost:8080.
-// Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
+// The guide itself is plain static files under app/ (index.html + ES modules +
+// CSS + data/trophies.json, no build step, nothing fetched over the network).
+// This program is the hand-in: it copies app/ and screenshots/ from beside
+// this file into the output directory and writes dossier.json there, using
+// the kit's vendored buildDossier (vendor/makefun-frontend.ts, unchanged —
+// the scorer rebuilds the dossier with its own copy and compares byte for
+// byte, so the library must stay exactly as shipped).
+//
+// Run it locally to check the hand-in:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+// In the grader, MAKEFUN_OUTPUT_DIR is unset and /output is used instead.
+// The run is deterministic: the same input files always produce the same
+// dossier.json bytes, so the grader's two runs match.
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
 
-const here = fileURLToPath(new URL('.', import.meta.url));
-const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const repoRoot = fileURLToPath(new URL('.', import.meta.url));
+const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-if (!existsSync(join(here, 'app', 'index.html'))) {
-  throw new Error('app/index.html is missing: nothing to hand in');
+// The gate's caps, mirrored here so a bad entry fails loudly at build time
+// instead of silently at scoring time (see the kit's RULES.txt, "The gate").
+const DOSSIER_TEXT_MAX_BYTES = 163840;
+const SCREENSHOT_MAX_COUNT = 4;
+const SCREENSHOT_MAX_BYTES = 262144;
+const APP_MAX_FILES = 993;
+const APP_MAX_BYTES = 50331648;
+
+function countAppEntries(directory) {
+  let files = 0;
+  let bytes = 0;
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      const sub = countAppEntries(path);
+      files += sub.files;
+      bytes += sub.bytes;
+    } else if (entry.isFile()) {
+      files += 1;
+      bytes += statSync(path).size;
+    }
+  }
+  return { files, bytes };
 }
-if (!existsSync(join(here, 'screenshots'))) {
-  throw new Error('screenshots/ is missing: take 3 or 4 screenshots with tools/shots.mjs first');
+
+function fail(message) {
+  throw new Error(`main.ts: ${message}`);
 }
 
-mkdirSync(out, { recursive: true });
-cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
-mkdirSync(join(out, 'screenshots'), { recursive: true });
-if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+const appDir = join(repoRoot, 'app');
+const shotsDir = join(repoRoot, 'screenshots');
 
-// The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
-// scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files and directories in app/ or
-// 48 MiB of app files: app/ counts beside /output's own 1000-entry cap, its screenshots/ and dossier.json).
-writeFileSync(
-  join(out, 'dossier.json'),
-  buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 4, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 50331648 }),
-);
+if (!existsSync(join(appDir, 'index.html'))) fail('app/index.html is missing');
+if (!existsSync(join(appDir, 'data', 'trophies.json'))) fail('app/data/trophies.json is missing');
+
+const appTotals = countAppEntries(appDir);
+if (appTotals.files > APP_MAX_FILES) fail(`app/ holds ${appTotals.files} files, over the ${APP_MAX_FILES} cap`);
+if (appTotals.bytes > APP_MAX_BYTES) fail(`app/ is ${appTotals.bytes} bytes, over the ${APP_MAX_BYTES} cap`);
+
+const shotNames = existsSync(shotsDir)
+  ? readdirSync(shotsDir).filter((name) => !name.startsWith('.')).sort()
+  : [];
+if (shotNames.length < 3 || shotNames.length > SCREENSHOT_MAX_COUNT) {
+  fail(`screenshots/ holds ${shotNames.length} images, need 3 or 4`);
+}
+for (const name of shotNames) {
+  const size = statSync(join(shotsDir, name)).size;
+  if (size > SCREENSHOT_MAX_BYTES) fail(`screenshots/${name} is ${size} bytes, over the ${SCREENSHOT_MAX_BYTES} cap`);
+  if (!/\.(png|jpe?g)$/i.test(name)) fail(`screenshots/${name} is not a PNG or JPEG file`);
+}
+
+mkdirSync(outputDir, { recursive: true });
+cpSync(appDir, join(outputDir, 'app'), { recursive: true });
+mkdirSync(join(outputDir, 'screenshots'), { recursive: true });
+if (shotNames.length > 0) cpSync(shotsDir, join(outputDir, 'screenshots'), { recursive: true });
+
+const dossier = buildDossier(outputDir, {
+  text_max_bytes: DOSSIER_TEXT_MAX_BYTES,
+  screenshots: { max: SCREENSHOT_MAX_COUNT, max_bytes: SCREENSHOT_MAX_BYTES },
+  app_max_files: APP_MAX_FILES,
+  app_max_bytes: APP_MAX_BYTES,
+});
+writeFileSync(join(outputDir, 'dossier.json'), dossier);
+
+console.log(`Leonida Trophy Guide handed in: ${appTotals.files} app files, ${shotNames.length} screenshots, dossier ${dossier.length} bytes -> ${outputDir}`);
