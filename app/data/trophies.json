@@ -16,7 +16,7 @@
    "grade": "platinum",
    "kind": "story",
    "missable": false,
-   "guide": "This is the finish line, not a task of its own: it unlocks by itself once the other 54 trophies are earned. Follow the Roadmap tab in order — story first, then stranger missions, activities, collectibles and counts, and 100% completion last — and this trophy is the reward for the whole list. Sources: Exophase (official name, description and grade) and PSNProfiles (grade check).",
+   "guide": "This is the finish line rather than a task of its own: it unlocks by itself once the other 54 trophies are earned. Follow the Roadmap tab in order — story first, then stranger missions, activities, collectibles and counts, and 100% completion last — and this trophy is the reward for the whole list. Sources: Exophase (official name, description and grade) and PSNProfiles (grade check).",
    "sources": ["Exophase — official trophy list", "PSNProfiles — trophy list"]
   },
   {
@@ -26,7 +26,7 @@
    "grade": "bronze",
    "kind": "story",
    "missable": false,
-   "guide": "Play the opening mission, Gone Fishing, to its end. It is the first story beat, so it comes naturally if you keep playing the story; there is nothing to prepare and no way to skip past it. The official description names only the mission, so no extra step is claimed here. Sources: Exophase (official name, description and grade) and PSNProfiles (grade check).",
+   "guide": "Play the opening mission, Gone Fishing, through to its end. It is the first story beat, so it comes naturally if you keep playing the story; there is nothing to prepare and no way to skip past it. The official description names only the mission, so no extra step is claimed here. Sources: Exophase (official name, description and grade) and PSNProfiles (grade check).",
    "sources": ["Exophase — official trophy list", "PSNProfiles — trophy list"]
   },
   {
@@ -167,7 +167,7 @@
    "grade": "bronze",
    "kind": "activity",
    "missable": false,
-   "guide": "Try every type of activity in the game at least once. The starter list notes 9 activity types, so treat this as a sampler: play one round of each activity the game offers — racing, shooting range, fishing, arcade, drone racing and the rest — and the trophy pops when the last type is tried. Do it early: it teaches you which activities you enjoy grinding later. Sources: Exophase (official name, description and grade) and PSNProfiles (grade check).",
+   "guide": "Try every type of activity in the game at least once. Treat this as a sampler: play one round of each activity the game offers — racing, shooting range, fishing, arcade, drone racing and the rest — and the trophy pops when the last type is tried. The official description does not state how many activity types there are, so this guide claims no number. Do it early: it teaches you which activities you enjoy grinding later. Sources: Exophase (official name, description and grade) and PSNProfiles (grade check).",
    "sources": ["Exophase — official trophy list", "PSNProfiles — trophy list"]
   },
   {
@@ -191,8 +191,7 @@
    "count": 14,
    "guide": "Win a Top Fun drone race at all 14 locations. Each location needs its own win, so a single victory is not enough — work through the locations one by one and tick them off in this tracker as you win them. Drone racing rewards learning each course, so a slow practise run before racing for the win saves retries. Sources: Exophase (official name, description and 14 locations) and PSNProfiles (grade and count check).",
    "sources": ["Exophase — official trophy list", "PSNProfiles — trophy list"]
-  }
-,
+  },
   {
    "id": 19,
    "name": "Earn Cash, Not Kudos",
@@ -381,8 +380,7 @@
    "missableNote": "Five takedowns inside one Combat Focus — a single attempt. Pick a fight with enough enemies grouped together; a failed attempt just means trying again with a better setup.",
    "guide": "Take down five enemies during one single use of Combat Focus. The five must fall inside the same activation, so set it up: find a fight with at least five enemies close together, trigger Combat Focus, and work through them before it ends. If you run out of targets or the focus ends early, reset and pick a busier fight. Sources: Exophase (official name, description and grade) and PSNProfiles (grade check).",
    "sources": ["Exophase — official trophy list", "PSNProfiles — trophy list"]
-  }
-,
+  },
   {
    "id": 37,
    "name": "Catch Me If You Can",

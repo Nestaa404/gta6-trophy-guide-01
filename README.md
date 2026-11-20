@@ -30,7 +30,9 @@ mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
 Screenshots in `screenshots/` are real Chromium renders of the app
-(`tools/shots.mjs`): the checklist with a guide open, the roadmap, the
+(`tools/shots.mjs`, Playwright headless_shell — the Hatch-patched Chrome on
+this machine needs a WebGL domain policy file that is no longer present, and
+this app uses no WebGL): the checklist with a guide open, the roadmap, the
 missable list, and the spoiler setting at work.
 
 Built by Brio and sub-agents for @anesta-s-kurniawansyah.

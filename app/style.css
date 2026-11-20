@@ -72,6 +72,8 @@ main { padding: 18px 32px; }
   background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; cursor: pointer;
 }
 .rows li:hover { border-color: var(--pink); }
+.rows li:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.noscript { background: #3a0f24; border: 1px solid var(--pink); border-radius: 8px; padding: 12px 16px; margin: 16px 32px 0; line-height: 1.5; }
 .rows li.selected { border-color: var(--cyan); box-shadow: 0 0 0 1px var(--cyan); }
 .rows li.earned { opacity: .75; }
 .rows li input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--pink); cursor: pointer; }
@@ -106,7 +108,8 @@ main { padding: 18px 32px; }
 .roadmap h3 .stage { color: var(--pink); }
 .roadmap p { margin: 0 0 10px; color: var(--muted); line-height: 1.55; }
 .roadmap .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.roadmap .chips span { font-size: 12px; background: #0e0a24; border: 1px solid var(--line); border-radius: 20px; padding: 3px 10px; }
+.roadmap .chips span { font-size: 12px; background: #0e0a24; border: 1px solid var(--line); border-radius: 20px; padding: 3px 10px; cursor: pointer; }
+.roadmap .chips span:hover { border-color: var(--pink); }
 footer { padding: 8px 32px 32px; color: var(--muted); line-height: 1.6; font-size: 14px; max-width: 1000px; }
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }

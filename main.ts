@@ -1,4 +1,4 @@
-// Built by Brio (Agent Builder) for @anesta-s-kurniawansyah: the guide itself is app/ —
+// Built by Brio (Agent Rebuild) for @anesta-s-kurniawansyah: the guide itself is app/ —
 // a tracker over the 55 official trophies with cited guides, a six-stage platinum
 // roadmap and 16 missable flags — and screenshots/ holds four real Chromium renders
 // of it (checklist with a guide open, roadmap, missable list, spoiler setting on).
@@ -8,11 +8,6 @@
 // and screenshots/ from beside this file to /output and writes /output/dossier.json, the summary the judge reads (your
 // screenshots, the first load's files and bytes, and your source), with the vendored make.fun library. Leave
 // vendor/makefun-frontend.ts as it is: the scorer requires dossier.json to be byte for byte what its own copy writes.
-//
-// Only the plumbing, not a winner: a plain checklist of the 55 trophies with a one-line hint each. Write a real guide
-// for every trophy in your own words, a roadmap to the platinum, filters and a spoiler setting in app/, put 3 or 4 PNG
-// or JPEG screenshots of it in screenshots/ (the first by name is the cover; shots.json says which views this
-// starter's were taken of), and run it.
 //
 // Serve it locally with `node serve.ts`, then open http://localhost:8080.
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
@@ -25,6 +20,13 @@ import { buildDossier } from './vendor/makefun-frontend.ts';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+
+if (!existsSync(join(here, 'app', 'index.html'))) {
+  throw new Error('app/index.html is missing: nothing to hand in');
+}
+if (!existsSync(join(here, 'screenshots'))) {
+  throw new Error('screenshots/ is missing: take 3 or 4 screenshots with tools/shots.mjs first');
+}
 
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
